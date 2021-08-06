@@ -1,0 +1,21 @@
+{% extends 'layouts/centered.html' %}
+
+
+{% block main %}
+<form action="{{ url_for('forms.login') }}" method="POST" style="width: 320px; margin-bottom: 64px;">
+  <legend class="mb-4">Login to Planner</legend>
+  <div class="mb-3">
+    <label for="username" class="form-label small">Username</label>
+    <input type="text" name="username" id="username" class="form-control px-3" required>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label small">Password</label>
+    <input type="password" name="password" id="password" class="form-control px-3" required>
+  </div>
+  <div>
+    <button type="submit" class="btn btn-info w-100">Login</button>
+  </div>
+</form>
+
+<a href="{{ url_for('pages.registration') }}" class="link-info">New user</a>
+{% endblock %}

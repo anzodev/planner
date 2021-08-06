@@ -1,0 +1,12 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block body %}
+<div style="width: 100vw; height: 100vh;">
+  <div class="d-flex justify-content-center align-items-center h-100 w-100">
+    <main>
+      {% block main %}{% endblock %}
+    </main>
+  </div>
+</div>
+{% endblock %}

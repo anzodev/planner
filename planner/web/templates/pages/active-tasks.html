@@ -1,0 +1,67 @@
+{% extends 'layouts/page.html' %}
+
+
+{% block heding %}Active Tasks{% endblock %}
+
+
+{% block main %}
+<div class="text-center">
+  <button type="button" class="btn btn-success">Add Task</button>
+</div>
+
+<!-- <div class="col-6 offset-3 mb-5">
+      <div class="card p-3 shadow-none">
+        <form action="">
+          <legend class="mb-3">New task</legend>
+
+          <div class="mb-3">
+            <label for="" class="form-label small">Name</label>
+            <input type="text" class="form-control px-3" id="" placeholder="Build a house">
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label small">Extra info (optional)</label>
+            <textarea name="" id="" rows="4" class="form-control px-3"
+              placeholder="4 bedrooms and pool are required"></textarea>
+          </div>
+          <div>
+            <div class="row">
+              <div class="col-6">
+                <button type="submit" class="btn btn-info w-100">Save</button>
+              </div>
+              <div class="col-6">
+                <button type="button" class="btn btn-secondary w-100">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div> -->
+
+
+
+<div class="row">
+  <div class="col-6 offset-3">
+
+    <div class="list-group border-0 shadow-none">
+      {% if tasks %}
+      {% for task in tasks %}
+      <a href="{{ url_for('pages.task', task_id=task.id) }}"
+        class="list-group-item list-group-item-action card border-top shadow-none p-0 mb-4">
+        <div class="p-3">
+          <div class="d-flex align-items-center">
+            <span class="text-truncate me-5">{{ task.name }}</span>
+            <span class="small text-black-50">{{ task.progress }}%</span>
+          </div>
+        </div>
+        <div class="progress" style="height: 3px;">
+          <div class="progress-bar bg-warning" role="progressbar" style="width: {{ task.progress }}%;"
+            aria-valuenow="{{ task.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </a>
+      {% for task in tasks %}
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}

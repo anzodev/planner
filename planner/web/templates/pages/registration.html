@@ -1,0 +1,25 @@
+{% extends 'layouts/centered.html' %}
+
+
+{% block main %}
+<form action="{{ url_for('forms.create_user') }}" method="POST" style="width: 320px; margin-bottom: 64px;">
+  <legend class="mb-4">New User</legend>
+  <div class="mb-3">
+    <label for="username" class="form-label small">Username</label>
+    <input type="text" name="username" id="username" class="form-control px-3" required>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label small">Password</label>
+    <input type="password" id="password" class="form-control px-3" required>
+  </div>
+  <div class="mb-3">
+    <label for="password-copy" class="form-label small">Repeat password</label>
+    <input type="password" id="password-copy" class="form-control px-3" required>
+  </div>
+  <div>
+    <button type="submit" class="btn btn-info w-100">Create User</button>
+  </div>
+</form>
+
+<a href="{{ url_for('pages.login') }}" class="link-info">Login</a>
+{% endblock %}

@@ -20,6 +20,10 @@ def forget_user() -> None:
     session.pop("uname", None)
 
 
+def is_user_in_session() -> bool:
+    return "uid" in session
+
+
 def has_access(f):
     @wraps(f)
     def wrapper(*args, **kwargs):

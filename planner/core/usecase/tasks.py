@@ -31,7 +31,7 @@ def create_task(
 def remove_task(task: Task) -> None:
     with db.atomic():
         parent_task = task.parent_task
-        task.delete_instance()
+        task.delete_instance(recursive=True, delete_nullable=True)
 
         if parent_task is not None:
             _recalculate_task_chain_progress(parent_task)

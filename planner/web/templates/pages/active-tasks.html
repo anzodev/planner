@@ -1,26 +1,29 @@
 {% extends 'layouts/page.html' %}
 
 
-{% block heding %}Active Tasks{% endblock %}
+{% block heading %}Active Tasks{% endblock %}
 
 
 {% block main %}
 <div class="text-center">
-  <button type="button" class="btn btn-success">Add Task</button>
+  <button type="button" class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#collpase-new-task-form">Add
+    Task</button>
 </div>
 
-<!-- <div class="col-6 offset-3 mb-5">
-      <div class="card p-3 shadow-none">
-        <form action="">
-          <legend class="mb-3">New task</legend>
+<div class="collapse" id="collpase-new-task-form">
+  <div class="row">
+    <div class="col-6 offset-3">
 
+      <div class="card p-3 shadow-none mt-4">
+        <form action="{{ url_for('forms.create_task') }}" method="POST" autocomplete="off">
+          <legend class="mb-3">New task</legend>
           <div class="mb-3">
-            <label for="" class="form-label small">Name</label>
-            <input type="text" class="form-control px-3" id="" placeholder="Build a house">
+            <label for="name" class="form-label small">Name</label>
+            <input type="text" name="name" class="form-control px-3" id="name" placeholder="Build a house">
           </div>
           <div class="mb-3">
-            <label for="" class="form-label small">Extra info (optional)</label>
-            <textarea name="" id="" rows="4" class="form-control px-3"
+            <label for="extra-info" class="form-label small">Extra info (optional)</label>
+            <textarea name="extra_info" id="extra-info" rows="4" class="form-control px-3"
               placeholder="4 bedrooms and pool are required"></textarea>
           </div>
           <div>
@@ -29,26 +32,28 @@
                 <button type="submit" class="btn btn-info w-100">Save</button>
               </div>
               <div class="col-6">
-                <button type="button" class="btn btn-secondary w-100">Cancel</button>
+                <button type="button" class="btn btn-secondary w-100" data-bs-toggle="collapse"
+                  data-bs-target="#collpase-new-task-form">Cancel</button>
               </div>
             </div>
           </div>
         </form>
       </div>
-    </div> -->
 
-
+    </div>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-6 offset-3">
 
-    <div class="list-group border-0 shadow-none">
+    <div class="list-group border-0 shadow-none mt-5">
       {% if tasks %}
       {% for task in tasks %}
       <a href="{{ url_for('pages.task', task_id=task.id) }}"
         class="list-group-item list-group-item-action card border-top shadow-none p-0 mb-4">
         <div class="p-3">
-          <div class="d-flex align-items-center">
+          <div class="d-flex justify-content-between align-items-center">
             <span class="text-truncate me-5">{{ task.name }}</span>
             <span class="small text-black-50">{{ task.progress }}%</span>
           </div>
@@ -58,7 +63,7 @@
             aria-valuenow="{{ task.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
       </a>
-      {% for task in tasks %}
+      {% endfor %}
       {% endif %}
     </div>
 

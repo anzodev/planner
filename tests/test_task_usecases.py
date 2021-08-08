@@ -46,6 +46,18 @@ def test_remove_task(make_task):
 
 
 @pytest.mark.usefixtures("with_memory_database")
+def test_remove_task__recursive(make_task):
+    task1 = make_task()
+    task2 = make_task(parent_task=task1)
+    make_task(parent_task=task2)
+
+    assert Task.select().count() == 3
+
+    task_usecase.remove_task(task2)
+    assert Task.select().count() == 1
+
+
+@pytest.mark.usefixtures("with_memory_database")
 def test_complete_task(make_task):
     task = make_task()
     task_usecase.complete_task(task)

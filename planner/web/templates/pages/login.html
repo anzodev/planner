@@ -2,7 +2,7 @@
 
 
 {% block main %}
-<form action="{{ url_for('forms.login') }}" method="POST" style="width: 320px; margin-bottom: 64px;">
+<form action="{{ url_for('forms.login') }}" method="POST" style="width: 320px; margin-bottom: 64px;" autocomplete="off">
   <legend class="mb-4">Login to Planner</legend>
   <div class="mb-3">
     <label for="username" class="form-label small">Username</label>

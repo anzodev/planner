@@ -1,0 +1,25 @@
+{% extends 'layouts/page.html' %}
+
+
+{% block heading %}Task{% endblock %}
+
+
+{% block main %}
+<div class="row">
+  <div class="col-6">
+    <div class="h4">{{ task.name }}</div>
+    <div class="small mt-2 text-black-50">Parent task: <a href="#">Make life better</a></div>
+    {% if task.extra_info %}
+    <p class="mt-4">{{ task.extra_info }}</p>
+    {% endif %}
+    <div class="d-flex align-items-center mt-5">
+      <button class="btn btn-sm btn-success">Complete Task</button>
+      <button class="btn btn-sm btn-info ms-2">Add Subtask</button>
+      <button class="btn btn-sm btn-danger ms-auto">Remove Task</button>
+    </div>
+  </div>
+  <div class="col-6">
+    123
+  </div>
+</div>
+{% endblock %}

@@ -4,6 +4,7 @@ from flask import Blueprint
 from flask import Flask
 from flask import Response
 from flask import abort
+from flask import current_app
 from flask import g
 from flask import redirect
 from flask import render_template
@@ -35,9 +36,9 @@ def init_app(app: Flask) -> None:
             return redirect(url_for("pages.index"))
         return render_template("pages/login.html")
 
-    @page("/registration", "registration")
+    @page("/sign-up", "sign_up")
     def _():
-        return render_template("pages/registration.html")
+        return render_template("pages/sign-up.html")
 
     @page("/", "index")
     @auth.has_access
@@ -51,7 +52,11 @@ def init_app(app: Flask) -> None:
         active_tasks = (
             Task
             .select()
-            .where(Task.progress != 100)
+            .where(
+                (Task.progress != 100)
+                & (Task.parent_task.is_null())
+                & (Task.user_id == g.user_id)
+            )
             .order_by(Task.created_at.desc())
         )
         # fmt: on
@@ -60,7 +65,37 @@ def init_app(app: Flask) -> None:
     @page("/completed-tasks", "completed_tasks")
     @auth.has_access
     def _():
-        return redirect(url_for("pages.index"))
+        args = request.args
+        offset = int(args.get("offset", "0"))
+        limit = int(args.get("limit", current_app.config["COMPLETED_TASKS_LIMIT"]))
+
+        # fmt: off
+        completed_tasks_plus_one = list(
+            Task
+            .select()
+            .where(
+                (Task.progress == 100)
+                & (Task.parent_task.is_null())
+                & (Task.user_id == g.user_id)
+            )
+            .order_by(Task.created_at.desc())
+            .offset(offset)
+            .limit(limit + 1)
+        )
+        # fmt: on
+        completed_tasks = completed_tasks_plus_one[:limit]
+
+        has_next = len(completed_tasks_plus_one) > limit
+        has_previous = offset > 0
+
+        return render_template(
+            "pages/completed-tasks.html",
+            tasks=completed_tasks,
+            has_next=has_next,
+            has_previous=has_previous,
+            offset=offset,
+            limit=limit,
+        )
 
     @page("/tasks/<int:task_id>", "task")
     @auth.has_access
@@ -69,9 +104,24 @@ def init_app(app: Flask) -> None:
         if task is None:
             abort(404)
 
-        return render_template("pages/task.html", task=task)
+        # fmt: off
+        subtasks = (
+            Task
+            .select()
+            .where(
+                Task.parent_task == task
+            )
+        )
+        # fmt: on
 
-    @form("/users/create", "create_user")
+        return render_template(
+            "pages/task.html",
+            task=task,
+            parent_task=task.parent_task,
+            subtasks=subtasks,
+        )
+
+    @form("/sign-up", "sign_up")
     def _():
         form = request.form
         username = form["username"]
@@ -80,11 +130,11 @@ def init_app(app: Flask) -> None:
 
         if password != password_copy:
             notify.error("Passwords missmatch!")
-            return redirect(url_for("pages.registration"))
+            return redirect(url_for("pages.sign_up"))
 
         if User.select(User.username).where(User.username == username).exists():
             notify.error(f"User '{username}' exists already.")
-            return redirect(url_for("pages.registration"))
+            return redirect(url_for("pages.sign_up"))
 
         password_hasher = app_runtime_helpers.init_password_hasher()
         user_usecase.create_user(username, password_hasher, password)
@@ -122,22 +172,64 @@ def init_app(app: Flask) -> None:
     def _():
         form = request.form
         name = form["name"]
-        extra_info = form["extra_info"] or None
+        extra_info = form.get("extra_info")
+        parent_task_id = form.get("parent_task_id")
 
         user = User.get_by_id(g.user_id)
-        task_usecase.create_task(user, name, extra_info=extra_info)
+        parent_task = None
+        if parent_task_id is not None:
+            parent_task = Task.get_or_none(id=parent_task_id, user=user)
 
-        return redirect(url_for("pages.index"))
+        task_usecase.create_task(
+            user, name, extra_info=extra_info, parent_task=parent_task
+        )
 
-    # @form("/tasks/remove")
-    # @auth.has_access
-    # def _():
-    #     ...
+        url = (
+            url_for("pages.task", task_id=parent_task_id)
+            if parent_task_id is not None
+            else url_for("pages.active_tasks")
+        )
+        return redirect(url)
 
-    # @form("/tasks/complete")
-    # @auth.has_access
-    # def _():
-    #     ...
+    @form("/tasks/remove", "remove_task")
+    @auth.has_access
+    def _():
+        form = request.form
+        task_id = form["task_id"]
+
+        task = Task.get_or_none(id=task_id, user_id=g.user_id)
+        if task is None:
+            abort(400)
+
+        parent_task = task.parent_task
+
+        task_usecase.remove_task(task)
+
+        return redirect(
+            url_for("pages.task", task_id=parent_task.id)
+            if parent_task is not None
+            else url_for("pages.active_tasks")
+        )
+
+    @form("/tasks/complete", "complete_task")
+    @auth.has_access
+    def _():
+        form = request.form
+        task_id = form["task_id"]
+
+        task = Task.get_or_none(id=task_id, user_id=g.user_id)
+        if task is None:
+            abort(400)
+
+        parent_task = task.parent_task
+
+        task_usecase.complete_task(task)
+
+        return redirect(
+            url_for("pages.task", task_id=parent_task.id)
+            if parent_task is not None
+            else url_for("pages.active_tasks")
+        )
 
     @app.errorhandler(Exception)
     def errorhandler(exc: Exception) -> Response:

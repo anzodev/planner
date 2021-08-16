@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <p>{{ status_code }}</p>
-  <p>{{ description }}</p>
-</body>
-</html>
+{% extends 'layouts/centered.html' %}
 
+
+{% block main %}
+<div class="display-5 text-center mb-4">{{ status_code }}</div>
+<p class="text-muted text-center mb-5">{{ description }}</p>
+<div class="text-center mb-2">
+  <a href="{{ url_for('pages.index') }}" class="link-info">Back to Home</a>
+</div>
+<div class="text-center">
+  <a href="#" onclick="window.history.back()" class="link-info">Return</a>
+</div>
+{% endblock %}

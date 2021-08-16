@@ -1,53 +1,16 @@
 {% extends 'layouts/page.html' %}
 
 
-{% block heading %}Active Tasks{% endblock %}
+{% block topline %}
+<h1 class="h4">Active Tasks</h1>
+{% endblock %}
 
 
 {% block main %}
-<div class="text-center">
-  <button type="button" class="btn btn-info" data-bs-toggle="collapse" data-bs-target="#collpase-new-task-form">Add
-    Task</button>
-</div>
-
-<div class="collapse" id="collpase-new-task-form">
-  <div class="row">
-    <div class="col-6 offset-3">
-
-      <div class="card p-3 shadow-none mt-4">
-        <form action="{{ url_for('forms.create_task') }}" method="POST" autocomplete="off">
-          <legend class="mb-3">New task</legend>
-          <div class="mb-3">
-            <label for="name" class="form-label small">Name</label>
-            <input type="text" name="name" class="form-control px-3" id="name" placeholder="Build a house">
-          </div>
-          <div class="mb-3">
-            <label for="extra-info" class="form-label small">Extra info (optional)</label>
-            <textarea name="extra_info" id="extra-info" rows="4" class="form-control px-3"
-              placeholder="4 bedrooms and pool are required"></textarea>
-          </div>
-          <div>
-            <div class="row">
-              <div class="col-6">
-                <button type="submit" class="btn btn-info w-100">Save</button>
-              </div>
-              <div class="col-6">
-                <button type="button" class="btn btn-secondary w-100" data-bs-toggle="collapse"
-                  data-bs-target="#collpase-new-task-form">Cancel</button>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-
-    </div>
-  </div>
-</div>
-
 <div class="row">
-  <div class="col-6 offset-3">
+  <div class="col-6">
 
-    <div class="list-group border-0 shadow-none mt-5">
+    <div class="list-group border-0 shadow-none">
       {% if tasks %}
       {% for task in tasks %}
       <a href="{{ url_for('pages.task', task_id=task.id) }}"
@@ -58,14 +21,35 @@
             <span class="small text-black-50">{{ task.progress }}%</span>
           </div>
         </div>
-        <div class="progress" style="height: 3px;">
+        <div class="progress" style="height: 2px;">
           <div class="progress-bar bg-warning" role="progressbar" style="width: {{ task.progress }}%;"
             aria-valuenow="{{ task.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
       </a>
       {% endfor %}
+      {% else %}
+      <p class="text-muted">You don't have any active tasks.</p>
       {% endif %}
     </div>
+
+  </div>
+  <div class="col-5 offset-1">
+
+    <form action="{{ url_for('forms.create_task') }}" method="POST" autocomplete="off">
+      <legend class="mb-4 lead">New Task</legend>
+      <div class="mb-3">
+        <label for="name" class="form-label small">Name</label>
+        <input type="text" name="name" class="form-control px-3" id="name" placeholder="Build a house" required>
+      </div>
+      <div class="mb-3">
+        <label for="extra-info" class="form-label small">Extra info (optional)</label>
+        <textarea name="extra_info" id="extra-info" rows="4" class="form-control px-3"
+          placeholder="4 bedrooms and pool are required"></textarea>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-info w-100">Add Task</button>
+      </div>
+    </form>
 
   </div>
 </div>

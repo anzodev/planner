@@ -2,8 +2,8 @@
 
 
 {% block main %}
-<form action="{{ url_for('forms.create_user') }}" method="POST" style="width: 320px; margin-bottom: 64px;" autocomplete="off">
-  <legend class="mb-4">New User</legend>
+<form action="{{ url_for('forms.sign_up') }}" method="POST" style="width: 320px; margin-bottom: 64px;" autocomplete="off">
+  <legend class="mb-4">Create a New Account</legend>
   <div class="mb-3">
     <label for="username" class="form-label small">Username</label>
     <input type="text" name="username" id="username" class="form-control px-3" required>
@@ -17,7 +17,7 @@
     <input type="password" name="password_copy" id="password-copy" class="form-control px-3" required>
   </div>
   <div>
-    <button type="submit" class="btn btn-info w-100">Create User</button>
+    <button type="submit" class="btn btn-info w-100">Sign Up</button>
   </div>
 </form>
 

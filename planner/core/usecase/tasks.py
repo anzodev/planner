@@ -9,7 +9,7 @@ from planner.core.models import db
 def create_task(
     user: User,
     name: str,
-    extra_info: Optional[str] = None,
+    note: Optional[str] = None,
     parent_task: Optional[Task] = None,
 ) -> Task:
     with db.atomic():
@@ -17,7 +17,7 @@ def create_task(
             user=user,
             parent_task=parent_task,
             name=name,
-            extra_info=extra_info,
+            note=note,
             progress=0,
             created_at=datetime.datetime.utcnow(),
         )

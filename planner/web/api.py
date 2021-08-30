@@ -172,7 +172,7 @@ def init_app(app: Flask) -> None:
     def _():
         form = request.form
         name = form["name"]
-        extra_info = form.get("extra_info")
+        note = form.get("note")
         parent_task_id = form.get("parent_task_id")
 
         user = User.get_by_id(g.user_id)
@@ -181,7 +181,7 @@ def init_app(app: Flask) -> None:
             parent_task = Task.get_or_none(id=parent_task_id, user=user)
 
         task_usecase.create_task(
-            user, name, extra_info=extra_info, parent_task=parent_task
+            user, name, note=note, parent_task=parent_task
         )
 
         url = (

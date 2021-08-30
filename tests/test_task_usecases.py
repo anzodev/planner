@@ -18,20 +18,20 @@ def test_create_task(make_user):
     assert t1.user == user
     assert t1.parent_task is None
     assert t1.name == "Go for a walk"
-    assert t1.extra_info is None
+    assert t1.note is None
     assert t1.progress == 0
     assert t1.created_at == datetime.datetime(2021, 1, 1, 15, 30, 45)
 
     t2 = task_usecase.create_task(
         user=user,
         name="Go for a walk",
-        extra_info="Make pause after long pc work.",
+        note="Make pause after long pc work.",
         parent_task=t1,
     )
     assert t2.user == user
     assert t2.parent_task == t1
     assert t2.name == "Go for a walk"
-    assert t2.extra_info == "Make pause after long pc work."
+    assert t2.note == "Make pause after long pc work."
     assert t2.progress == 0
     assert t2.created_at == datetime.datetime(2021, 1, 1, 15, 30, 45)
 

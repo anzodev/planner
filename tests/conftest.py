@@ -50,7 +50,7 @@ def make_task(make_user):
         user: Optional[User] = None,
         parent_task: Optional[Task] = None,
         name: str = "Go for a walk",
-        extra_info: Optional[str] = None,
+        note: Optional[str] = None,
         progress: float = 0.0,
         created_at: Optional[datetime.datetime] = None,
     ) -> Task:
@@ -58,7 +58,7 @@ def make_task(make_user):
             user=make_user() if user is None else user,
             parent_task=parent_task,
             name=name,
-            extra_info=extra_info,
+            note=note,
             progress=progress,
             created_at=datetime.datetime.utcnow() if created_at is None else created_at,
         )

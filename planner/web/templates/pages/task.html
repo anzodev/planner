@@ -9,13 +9,15 @@
     <div class="small mt-2 text-black-50">Back to: <a href="{{ url_for('pages.task', task_id=parent_task.id) }}"
         class="link-info">{{ parent_task.name }}</a></div>
     {% endif %}
-    {% if task.extra_info %}
-    <pre class="mt-4 mb-0 lh-md small text-muted" style="font-family: inherit; white-space: pre-line;">{{ task.extra_info }}</pre>
+    {% if task.note %}
+    <pre class="mt-4 mb-0 lh-md small text-muted"
+      style="font-family: inherit; white-space: pre-line;">{{ task.note }}</pre>
     {% endif %}
   </div>
   <div class="progress" style="height: 2px;">
-    <div class="progress-bar bg-{% if task.is_completed() %}success{% else %}warning{% endif %}" role="progressbar" style="width: {{ task.progress }}%;"
-      aria-valuenow="{{ task.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="progress-bar bg-{% if task.is_completed() %}success{% else %}warning{% endif %}" role="progressbar"
+      style="width: {{ task.progress }}%;" aria-valuenow="{{ task.progress }}" aria-valuemin="0" aria-valuemax="100">
+    </div>
   </div>
   <div class="card-footer p-3">
     <div class="d-flex justify-content-end align-items-center">
@@ -65,8 +67,9 @@
           </div>
         </div>
         <div class="progress" style="height: 3px;">
-          <div class="progress-bar bg-{% if task.is_completed() %}success{% else %}warning{% endif %}" role="progressbar" style="width: {{ task.progress }}%;"
-            aria-valuenow="{{ task.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="progress-bar bg-{% if task.is_completed() %}success{% else %}warning{% endif %}"
+            role="progressbar" style="width: {{ task.progress }}%;" aria-valuenow="{{ task.progress }}"
+            aria-valuemin="0" aria-valuemax="100"></div>
         </div>
       </a>
       {% endfor %}
@@ -86,8 +89,8 @@
         <input type="text" name="name" class="form-control" id="name" placeholder="Build a house">
       </div>
       <div class="mb-3">
-        <label for="extra-info" class="form-label text-muted small">Extra info (optional)</label>
-        <textarea name="extra_info" id="extra-info" rows="4" class="form-control"
+        <label for="note" class="form-label text-muted small">Note (optional)</label>
+        <textarea name="note" id="note" rows="4" class="form-control"
           placeholder="4 bedrooms and pool are required"></textarea>
       </div>
       <div>

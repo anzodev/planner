@@ -24,7 +24,7 @@ class Task(BaseModel):
     user = pw.ForeignKeyField(User)
     parent_task = pw.ForeignKeyField("self", null=True)
     name = pw.TextField()
-    extra_info = pw.TextField(null=True)
+    note = pw.TextField(null=True)
     progress = pw.DoubleField()
     created_at = pw.DateTimeField()
 

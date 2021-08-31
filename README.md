@@ -1,6 +1,6 @@
 # planner
 
-The simple web app helps you to achive your goals more effectively by decomposing tasks.
+The simple web app helps you to achieve your goals more effectively by decomposing tasks.
 
 
 ## Run

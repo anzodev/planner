@@ -12,6 +12,8 @@ class Config:
     PBKDF2_PWD_HASHER_ITERATIONS: int
     PBKDF2_PWD_HASHER_SALT_LENGTH: int
     COMPLETED_TASKS_LIMIT: int
+    LOCAL_RUN_HOST: str
+    LOCAL_RUN_PORT: int
 
     @classmethod
     def from_env(cls, env_path: Optional[str] = None) -> "Config":
@@ -26,4 +28,6 @@ class Config:
                 PBKDF2_PWD_HASHER_ITERATIONS=env.int("PBKDF2_PWD_HASHER_ITERATIONS"),
                 PBKDF2_PWD_HASHER_SALT_LENGTH=env.int("PBKDF2_PWD_HASHER_SALT_LENGTH"),
                 COMPLETED_TASKS_LIMIT=env.int("COMPLETED_TASKS_LIMIT", 10),
+                LOCAL_RUN_HOST=env.str("LOCAL_RUN_HOST", "localhost"),
+                LOCAL_RUN_PORT=env.int("LOCAL_RUN_PORT", 5000),
             )

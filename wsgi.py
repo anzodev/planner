@@ -17,4 +17,9 @@ app = web.create_app(config)
 if __name__ == "__main__":
     app.templates_auto_reload = True
     app.jinja_options["auto_reload"] = True
-    app.run(use_reloader=True, threaded=True)
+    app.run(
+        host=app.config["LOCAL_RUN_HOST"],
+        port=app.config["LOCAL_RUN_PORT"],
+        use_reloader=True,
+        threaded=True,
+    )
